@@ -8,7 +8,7 @@ function Header() {
         <p className="font-semibold">L</p>
       </div>
       <div className="font-semibold col-span-1 flex items-center justify-center">
-        <h1>Chat</h1>
+        <h1 className="text-xl">Chat</h1>
       </div>
       <div className="flex col-span-1 items-center justify-end pr-3 space-x-3">
         <CameraIcon className="h-5 w-5" />

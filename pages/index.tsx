@@ -11,7 +11,7 @@ const Home: NextPage = () => {
   // }, []);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-r from-cyan-200 to-blue-200">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-r from-blue-100 to-blue-200">
       <Head>
         <title>Chat app</title>
         <link rel="icon" href="/favicon.ico" />

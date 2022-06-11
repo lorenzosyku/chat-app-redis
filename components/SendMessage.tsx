@@ -1,9 +1,10 @@
 import React, { FormEvent, useRef, useState } from "react";
 import redis from "../redis-config";
 import { v4 as uuidv4 } from "uuid";
+import { ChevronDoubleRightIcon, SortAscendingIcon } from "@heroicons/react/outline";
 
 function SendMessage() {
-  const [name, setName] = useState("");
+  //const [name, setName] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -29,7 +30,9 @@ function SendMessage() {
           placeholder="Enter your message"
           className="relative flex-grow outline-none bg-transparent text-white placeholder-gray-500 pr-5"
         />
-        <button className="relative font-bold text-cyan-600">send</button>
+        <button className="relative font-bold text-cyan-600">
+          <ChevronDoubleRightIcon className="h-5 w-5"/>
+        </button>
       </form>
     </div>
   );
