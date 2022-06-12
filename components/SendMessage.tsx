@@ -1,18 +1,20 @@
 import React, { FormEvent, useRef, useState } from "react";
 import redis from "../redis-config";
 import { v4 as uuidv4 } from "uuid";
-import { ChevronDoubleRightIcon, SortAscendingIcon } from "@heroicons/react/outline";
+import { ChevronDoubleRightIcon } from "@heroicons/react/outline";
+import { useSession } from "next-auth/react";
 
 function SendMessage() {
-  //const [name, setName] = useState("");
+  const { data: session } = useSession()
   const inputRef = useRef<HTMLInputElement>(null);
+  console.log(session)
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(inputRef.current?.value);
-    if (!inputRef.current?.value) return;
+    if (!inputRef.current?.value || !session?.user?.name) return;
     await redis.hset(`message-${uuidv4()}`, {
-      name: name,
+      name: session.user.name,
       message: inputRef.current.value,
     });
     inputRef.current!.value = "";
