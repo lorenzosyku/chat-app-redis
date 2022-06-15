@@ -5,18 +5,19 @@ import { ChevronDoubleRightIcon } from "@heroicons/react/outline";
 import { useSession } from "next-auth/react";
 
 function SendMessage() {
-  const { data: session } = useSession()
+  const { data: session } = useSession();
   const inputRef = useRef<HTMLInputElement>(null);
-  console.log(session)
+  //console.log(session);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(inputRef.current?.value);
+
     if (!inputRef.current?.value || !session?.user?.name) return;
-    await redis.hset(`message-${uuidv4()}`, {
+    await redis.hset(`${uuidv4()}`, {
       name: session.user.name,
       message: inputRef.current.value,
     });
+
     inputRef.current!.value = "";
   };
 
@@ -33,7 +34,7 @@ function SendMessage() {
           className="relative flex-grow outline-none bg-transparent text-white placeholder-gray-500 pr-5"
         />
         <button className="relative font-bold text-cyan-600">
-          <ChevronDoubleRightIcon className="h-5 w-5"/>
+          <ChevronDoubleRightIcon className="h-5 w-5" />
         </button>
       </form>
     </div>

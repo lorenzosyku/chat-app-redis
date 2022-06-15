@@ -1,15 +1,19 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import Header from "../components/Header";
+import Messages from "../components/Messages";
 import SendMessage from "../components/SendMessage";
+import redis from "../redis-config";
 
-const Home: NextPage = () => {
-  // useEffect(() => {
-  //   const n = prompt("enter your name");
-  //   if (!n) return;
-  //   setName(n);
-  // }, []);
+interface Message {
+  name: string;
+  message: string;
+}
+interface Props {
+  messages: Message[];
+}
 
+const Home = ({messages}: Props) => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-r from-blue-100 to-blue-200">
       <Head>
@@ -17,9 +21,20 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
+      <Messages />
       <SendMessage />
     </div>
   );
 };
 
 export default Home;
+
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
+
+  //const messages = await redis.hgetall()
+  return {
+    props: {
+      messages: []
+    }
+  }
+}
