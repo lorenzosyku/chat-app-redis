@@ -1,19 +1,11 @@
-import type { GetServerSideProps, NextPage } from "next";
+import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import Header from "../components/Header";
 import Messages from "../components/Messages";
 import SendMessage from "../components/SendMessage";
-import redis from "../redis-config";
 
-interface Message {
-  name: string;
-  message: string;
-}
-interface Props {
-  messages: Message[];
-}
 
-const Home = ({messages}: Props) => {
+const Home = () => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-r from-blue-100 to-blue-200">
       <Head>
@@ -29,12 +21,12 @@ const Home = ({messages}: Props) => {
 
 export default Home;
 
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
+// export const getServerSideProps: GetServerSideProps<Props> = async () => {
 
-  //const messages = await redis.hgetall()
-  return {
-    props: {
-      messages: []
-    }
-  }
-}
+//   //const messages = await redis.hgetall()
+//   return {
+//     props: {
+//       messages: []
+//     }
+//   }
+// }
