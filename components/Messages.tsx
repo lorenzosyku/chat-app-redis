@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import redis from "../redis-config";
+import Message from "./Message";
 
 function Messages() {
   const [message, setMessage] = useState<any>();
@@ -27,6 +28,7 @@ function Messages() {
         {/* <p>{message?.id}</p>
         <p>{message?.text}</p>
         <p>{message?.name}</p> */}
+        <Message />
       </div>
     </div>
   );

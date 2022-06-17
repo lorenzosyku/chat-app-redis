@@ -1,4 +1,3 @@
-import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import Header from "../components/Header";
 import Messages from "../components/Messages";
@@ -21,12 +20,3 @@ const Home = () => {
 
 export default Home;
 
-// export const getServerSideProps: GetServerSideProps<Props> = async () => {
-
-//   //const messages = await redis.hgetall()
-//   return {
-//     props: {
-//       messages: []
-//     }
-//   }
-// }
