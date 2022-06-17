@@ -5,3 +5,4 @@ interface Message {
 interface Props {
   messages: Message[];
 }
+

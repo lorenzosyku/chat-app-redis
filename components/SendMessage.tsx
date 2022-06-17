@@ -1,10 +1,12 @@
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useRef } from "react";
 import redis from "../redis-config";
 import { v4 as uuidv4 } from "uuid";
 import { ChevronDoubleRightIcon } from "@heroicons/react/outline";
 import { useSession } from "next-auth/react";
 
+
 function SendMessage() {
+  const endOfMessangesRef = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
   const inputRef = useRef<HTMLInputElement>(null);
   //console.log(session);
@@ -18,11 +20,16 @@ function SendMessage() {
       message: inputRef.current.value,
     });
 
+    endOfMessangesRef?.current?.scrollIntoView({ behavior: "smooth"});
+
     inputRef.current!.value = "";
   };
 
   return (
     <div className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
+      <div ref={endOfMessangesRef}>
+        <p>You are up-to-date!</p>
+      </div>
       <form
         onSubmit={handleSubmit}
         className="flex fixed bottom-10 bg-black opacity-80 px-6 py-4 w-11/12 max-w-2xl shadow-xl rounded-full border-4 border-blue-400 relative-group"
