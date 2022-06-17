@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 import { ChevronDoubleRightIcon } from "@heroicons/react/outline";
 import { useSession } from "next-auth/react";
 
-
 function SendMessage() {
   const endOfMessangesRef = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
@@ -20,7 +19,7 @@ function SendMessage() {
       message: inputRef.current.value,
     });
 
-    endOfMessangesRef?.current?.scrollIntoView({ behavior: "smooth"});
+    endOfMessangesRef?.current?.scrollIntoView({ behavior: "smooth" });
 
     inputRef.current!.value = "";
   };
