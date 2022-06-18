@@ -2,6 +2,7 @@ import Avatar from "boring-avatars";
 import { useSession } from "next-auth/react";
 import React from "react";
 import { Msg } from "../typings";
+import TimeAgo from "react-timeago";
 
 function Message({ message }: Msg) {
   const { data: session } = useSession();
@@ -30,13 +31,17 @@ function Message({ message }: Msg) {
         <p>{message.text}</p>
       </div>
 
-      <p
+      <div
         className={`absolute -bottom-5 text-xs ${
           isUserMessage ? "text-pink-300" : "text-blue-400"
         }`}
       >
         {message.author}
-      </p>
+      </div>
+      <div className="">
+        {/* <TimeAgo date={message.createdAt} /> */}
+      </div>
+      
     </div>
   );
 }

@@ -3,11 +3,12 @@ import Head from "next/head";
 import Header from "../components/Header";
 import Messages from "../components/Messages";
 import redis from "../redis-config";
-import { mes } from "../typings";
+import { mes, Msg } from "../typings";
 
 interface Props {
   messages: mes[];
 }
+
 
 const Home = ({ messages }: Props) => {
   return (
@@ -25,19 +26,24 @@ const Home = ({ messages }: Props) => {
 export default Home;
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  let messages = [];
+  let messages: Array<mes> = [];
   const keys = await redis.keys("*");
 
   for (let i = 0; i < keys.length; i++) {
-    console.log(keys[i]);
+    //console.log(keys[i]);
     const values = await redis.hgetall(`${keys[i]}`);
 
     messages.push({
       id: keys[i],
       author: values?.name,
       text: values?.message,
+      createdAt: values?.createdAt,
     });
   }
+
+  messages?.sort(function (a:mes, b:mes) {
+    return a.createdAt - b.createdAt;
+  });
 
   return {
     props: {

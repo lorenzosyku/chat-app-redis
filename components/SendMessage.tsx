@@ -11,12 +11,13 @@ function SendMessage() {
   //console.log(session);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    //e.preventDefault();
 
     if (!inputRef.current?.value || !session?.user?.name) return;
     await redis.hset(`${uuidv4()}`, {
       name: session.user.name,
       message: inputRef.current.value,
+      createdAt: Date.now(),
     });
 
     endOfMessangesRef?.current?.scrollIntoView({ behavior: "smooth" });
