@@ -8,7 +8,7 @@ interface Props {
 
 function Messages({ messages }: Props) {
   return (
-    <div className="pb-56 h-screen bg-slate-600 w-full">
+    <div className="pb-56 h-screen overflow-y-scroll scrollbar-hide w-full">
       <div className="space-y-10 p-4">
         {messages?.map((message) => (
           <Message key={message.id} message={message} />

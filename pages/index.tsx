@@ -13,13 +13,15 @@ interface Props {
 
 const Home = ({ messages }: Props) => {
   return (
-    <div className="">
+    <div className="bg-slate-600">
       <Head>
         <title>Chat app</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="grid col-span-9">
-        <SideBar />
+        <div className="col-span-2">
+          <SideBar />
+        </div>
         <div className="col-span-6">
           <Header />
           <Messages messages={messages} />
