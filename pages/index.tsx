@@ -4,11 +4,12 @@ import Header from "../components/Header";
 import Messages from "../components/Messages";
 import SideBar from "../components/Sidebar";
 import redis from "../redis-config";
-import { mes, Msg } from "../typings";
+import { mes } from "../typings";
 
 interface Props {
+  sort: any;
+  push: any;
   messages: mes[];
-  // (a: mes, b: mes) => number
 }
 
 const Home = ({ messages }: Props) => {
@@ -19,7 +20,7 @@ const Home = ({ messages }: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="grid col-span-9">
-        <div className="col-span-2">
+        <div className="col-span-3">
           <SideBar />
         </div>
         <div className="col-span-6">
@@ -34,12 +35,10 @@ const Home = ({ messages }: Props) => {
 export default Home;
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  // let messages: Array<mes> = [];
-  let messages = [];
+  let messages: any[] = [];
   const keys = await redis.keys("*");
 
   for (let i = 0; i < keys.length; i++) {
-    //console.log(keys[i]);
     const values = await redis.hgetall(`${keys[i]}`);
 
     messages.push({
@@ -50,14 +49,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
     });
   }
 
-  //let sortedByCreatedAt = messages;
-  // sortedByCreatedAt?.sort(function (a: mes, b: mes) {
-  //   return a.createdAt - b.createdAt;
-  // });
-
-  // messages?.sort(function (a:mes, b:mes) {
-  //   return a.createdAt - b.createdAt;
-  // });
+  messages?.sort(function (a:mes, b:mes) {
+    return a.createdAt - b.createdAt;
+  });
 
   return {
     props: {
