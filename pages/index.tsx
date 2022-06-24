@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Messages from "../components/Messages";
 import SideBar from "../components/Sidebar";
@@ -49,13 +50,15 @@ export const getServerSideProps: GetServerSideProps = async () => {
     });
   }
 
-  messages?.sort(function (a:mes, b:mes) {
+  messages?.sort(function (a: mes, b: mes) {
     return a.createdAt - b.createdAt;
   });
-
+  //const messages = await fetchMessages();
+  console.log(messages);
   return {
     props: {
       messages,
     },
   };
 };
+
