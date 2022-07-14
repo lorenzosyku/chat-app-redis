@@ -6,7 +6,7 @@ export default async (req, res) => {
 
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
   const url =
-    `https://${process.env.REDIS_ENDPOINT}/lpush/todo/` +
+    `https://${process.env.REDIS_ENDPOINT}/lpush/message/` +
     message +
     "?_token=" +
     token;
