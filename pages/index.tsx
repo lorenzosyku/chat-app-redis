@@ -1,32 +1,158 @@
-import { GetServerSideProps } from "next";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
-import Messages from "../components/Messages";
-import SideBar from "../components/Sidebar";
-import redis from "../redis-config";
-import { mes } from "../typings";
+import { v4 as uuidv4 } from "uuid";
+import Avatar from "boring-avatars";
+import ReactTimeago from "react-timeago";
+import { ChevronDoubleRightIcon, XIcon } from "@heroicons/react/outline";
 
-interface Props {
-  sort: any;
-  push: any;
-  messages: mes[];
-}
+const Home = () => {
+  const [data, setData] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
+  const messageRef = useRef<HTMLInputElement>(null);
+  const { data: session } = useSession();
+  const isUserMessage = false;
+  const endOfMessangesRef = useRef<HTMLDivElement>(null);
 
-const Home = ({ messages }: Props) => {
+  let addMessage = (event: FormEvent<HTMLFormElement>) => {
+    setLoading(true);
+    event.preventDefault();
+    fetch(
+      "/api/add?message=" +
+        JSON.stringify({
+          name: session?.user?.name,
+          message: messageRef.current?.value,
+          createdAt: Date.now(),
+          id: uuidv4(),
+        })
+    )
+      .then((res) => res.json())
+      .then(() => {
+        loadMessages();
+        endOfMessangesRef.current?.scrollIntoView({ behavior: "smooth" });
+      });
+  };
+
+  let removeMessages = (removeMessage: any) => {
+    setLoading(true);
+    //console.log(rtodo)
+    fetch("/api/remove?message=" + JSON.stringify(removeMessage))
+      .then((res) => res.json())
+      .then((data) => {
+        loadMessages();
+      });
+  };
+
+  let loadMessages = () => {
+    console.log("load todos");
+    fetch("/api/list")
+      .then((res) => res.json())
+      .then((data) => {
+        const copy = JSON.parse(data);
+        const parsed = copy.map((el: string) => JSON.parse(el));
+        const formatted = parsed.reverse();
+        setData(formatted);
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    setLoading(true);
+    loadMessages();
+  }, []);
+
   return (
-    <div className="bg-slate-600">
+    <div className="bg-gradient-to-r from-gray-200 to-gray-400 backdrop-filter backdrop-blur-xl bg-opacity-40">
       <Head>
         <title>Chat app</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="grid col-span-9">
-        <div className="col-span-3">
-          <SideBar />
-        </div>
         <div className="col-span-6">
           <Header />
-          <Messages messages={messages} />
+          {session ? (
+            <div className="h-screen overflow-y-scroll scrollbar-hide w-full">
+              <div className="space-y-10 p-4 mt-12">
+                {data.map((message: any) => (
+                  <div
+                    key={message.id}
+                    className={`flex items-end space-x-2 relative ${
+                      isUserMessage && "justify-end"
+                    }`}
+                  >
+                    <div
+                      className={`relative h-8 w-8 ${
+                        isUserMessage && "order-last ml-2"
+                      }`}
+                    >
+                      <Avatar
+                        size={20}
+                        name={`${session?.user?.name}`}
+                        variant="beam"
+                        colors={[
+                          "#92A1C6",
+                          "#146A7C",
+                          "#F0AB3D",
+                          "#C271B4",
+                          "#C20D90",
+                        ]}
+                      />
+                    </div>
+                    <div
+                      className={`flex space-x-4 p-3 rounded-lg ${
+                        isUserMessage
+                          ? "rounded-br-none bg-gradient-to-r from-pink-500 to-indigo-200 backdrop-filter backdrop-blur-xl bg-opacity-40 "
+                          : "rounded-bl-none bg-gradient-to-l from-indigo-500 to-indigo-200 backdrop-filter backdrop-blur-xl bg-opacity-40"
+                      }`}
+                    >
+                      <p>{message.message}</p>
+                      <button onClick={() => removeMessages(message)}>
+                        <XIcon className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <div
+                      className={`absolute -bottom-5 text-xs ${
+                        isUserMessage ? "text-pink-300" : "text-blue-400"
+                      }`}
+                    >
+                      {message.name}
+                    </div>
+                    <div className="">
+                      <ReactTimeago date={message.createdAt} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-center">
+                <div className="pb-56" ref={endOfMessangesRef}>
+                  <p>You are up-to-date!</p>
+                </div>
+                <form
+                  className="flex fixed bottom-10 bg-black opacity-80 px-6 py-4 w-11/12 max-w-2xl shadow-xl rounded-full border-4 border-blue-400 relative-group"
+                  onSubmit={addMessage}
+                >
+                  <input
+                    type="text"
+                    name="messageRef"
+                    ref={messageRef}
+                    placeholder="New Message"
+                    className="relative flex-grow outline-none bg-transparent text-white placeholder-gray-500 pr-5"
+                  />
+
+                  <button className="relative font-bold text-cyan-600">
+                    <ChevronDoubleRightIcon className="h-5 w-5" />
+                  </button>
+                </form>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center h-screen w-full">
+              <p className="test-xl font-semibold italic animate-bounce">
+                Sign in to see your messages...
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -34,31 +160,3 @@ const Home = ({ messages }: Props) => {
 };
 
 export default Home;
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  let messages: any[] = [];
-  const keys = await redis.keys("*");
-
-  for (let i = 0; i < keys.length; i++) {
-    const values = await redis.hgetall(`${keys[i]}`);
-
-    messages.push({
-      id: keys[i],
-      author: values?.name,
-      text: values?.message,
-      createdAt: values?.createdAt,
-    });
-  }
-
-  messages?.sort(function (a: mes, b: mes) {
-    return a.createdAt - b.createdAt;
-  });
-  //const messages = await fetchMessages();
-  console.log(messages);
-  return {
-    props: {
-      messages,
-    },
-  };
-};
-
