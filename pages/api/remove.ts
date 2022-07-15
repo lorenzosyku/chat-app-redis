@@ -1,4 +1,14 @@
-export default async (req, res) => {
+export default async (
+  req: { query: { message: string } },
+  res: {
+    status: (arg0: number) => {
+      (): any;
+      new (): any;
+      send: { (arg0: string): any; new (): any };
+      json: { (arg0: string): any; new (): any };
+    };
+  }
+) => {
   if (!req.query.message) {
     return res.status(400).send("todo parameter required.");
   }
@@ -6,7 +16,7 @@ export default async (req, res) => {
 
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
   const url =
-    `https://${process.env.REDIS_ENDPOINT}/lpush/message/` +
+    `https://${process.env.REDIS_ENDPOINT}/lrem/message/1/` +
     message +
     "?_token=" +
     token;

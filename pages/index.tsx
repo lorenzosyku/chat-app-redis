@@ -36,7 +36,6 @@ const Home = () => {
 
   let removeMessages = (removeMessage: any) => {
     setLoading(true);
-    //console.log(rtodo)
     fetch("/api/remove?message=" + JSON.stringify(removeMessage))
       .then((res) => res.json())
       .then((data) => {
@@ -54,6 +53,7 @@ const Home = () => {
         const formatted = parsed.reverse();
         setData(formatted);
         setLoading(false);
+        //messageRef.current?.value = ""
       });
   };
   useEffect(() => {
@@ -62,7 +62,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-r from-gray-200 to-gray-400 backdrop-filter backdrop-blur-xl bg-opacity-40">
+    <div className="bg-mint-cream backdrop-filter backdrop-blur-xl bg-opacity-40">
       <Head>
         <title>Chat app</title>
         <link rel="icon" href="/favicon.ico" />
@@ -101,8 +101,8 @@ const Home = () => {
                     <div
                       className={`flex space-x-4 p-3 rounded-lg ${
                         isUserMessage
-                          ? "rounded-br-none bg-gradient-to-r from-pink-500 to-indigo-200 backdrop-filter backdrop-blur-xl bg-opacity-40 "
-                          : "rounded-bl-none bg-gradient-to-l from-indigo-500 to-indigo-200 backdrop-filter backdrop-blur-xl bg-opacity-40"
+                          ? "rounded-br-none bg-gradient-to-l from-mint-cream to-blue-crayola backdrop-filter backdrop-blur-xl bg-opacity-40 "
+                          : "rounded-bl-none bg-gradient-to-r from-mint-cream to-mellow-apricot backdrop-filter backdrop-blur-xl bg-opacity-40"
                       }`}
                     >
                       <p>{message.message}</p>
@@ -148,7 +148,7 @@ const Home = () => {
             </div>
           ) : (
             <div className="flex items-center justify-center h-screen w-full">
-              <p className="test-xl font-semibold italic animate-bounce">
+              <p className="text-xl font-semibold italic animate-bounce ">
                 Sign in to see your messages...
               </p>
             </div>
