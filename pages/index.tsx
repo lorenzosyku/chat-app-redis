@@ -99,7 +99,7 @@ const Home = () => {
                       />
                     </div>
                     <div
-                      className={`flex space-x-4 p-3 rounded-lg ${
+                      className={`flex shadow-md space-x-4 p-3 rounded-lg ${
                         isUserMessage
                           ? "rounded-br-none bg-gradient-to-l from-mint-cream to-blue-crayola backdrop-filter backdrop-blur-xl bg-opacity-40 "
                           : "rounded-bl-none bg-gradient-to-r from-mint-cream to-mellow-apricot backdrop-filter backdrop-blur-xl bg-opacity-40"
@@ -112,14 +112,15 @@ const Home = () => {
                     </div>
 
                     <div
-                      className={`absolute -bottom-5 text-xs ${
+                      className={`absolute flex -bottom-5 space-x-2 text-xs ${
                         isUserMessage ? "text-pink-300" : "text-blue-400"
                       }`}
                     >
-                      {message.name}
-                    </div>
-                    <div className="">
-                      <ReactTimeago date={message.createdAt} />
+                      <p className="font-semibold italic">{message.name}</p>
+
+                      <div className="">
+                        <ReactTimeago date={message.createdAt} />
+                      </div>
                     </div>
                   </div>
                 ))}
