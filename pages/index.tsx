@@ -12,8 +12,10 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const messageRef = useRef<HTMLInputElement>(null);
   const { data: session } = useSession();
+  console.log(session)
   const isUserMessage = false;
   const endOfMessangesRef = useRef<HTMLDivElement>(null);
+  //const [currentUser, setCurrentUser] = useState<any>('')
 
   let addMessage = (event: FormEvent<HTMLFormElement>) => {
     setLoading(true);
@@ -31,6 +33,7 @@ const Home = () => {
       .then(() => {
         loadMessages();
         endOfMessangesRef.current?.scrollIntoView({ behavior: "smooth" });
+        //messageRef.current.value = ""
       });
   };
 
@@ -51,9 +54,9 @@ const Home = () => {
         const copy = JSON.parse(data);
         const parsed = copy.map((el: string) => JSON.parse(el));
         const formatted = parsed.reverse();
+        console.log(formatted)
         setData(formatted);
         setLoading(false);
-        //messageRef.current?.value = ""
       });
   };
   useEffect(() => {
@@ -101,7 +104,7 @@ const Home = () => {
                     <div
                       className={`flex shadow-md space-x-4 p-3 rounded-lg ${
                         isUserMessage
-                          ? "rounded-br-none bg-gradient-to-l from-mint-cream to-blue-crayola backdrop-filter backdrop-blur-xl bg-opacity-40 "
+                          ? "rounded-br-none bg-gradient-to-l from-mint-cream to-cyan-500 backdrop-filter backdrop-blur-xl bg-opacity-40 "
                           : "rounded-bl-none bg-gradient-to-r from-mint-cream to-mellow-apricot backdrop-filter backdrop-blur-xl bg-opacity-40"
                       }`}
                     >
@@ -118,7 +121,7 @@ const Home = () => {
                     >
                       <p className="font-semibold italic">{message.name}</p>
 
-                      <div className="">
+                      <div >
                         <ReactTimeago date={message.createdAt} />
                       </div>
                     </div>
@@ -130,7 +133,7 @@ const Home = () => {
                   <p>You are up-to-date!</p>
                 </div>
                 <form
-                  className="flex fixed bottom-10 bg-black opacity-80 px-6 py-4 w-11/12 max-w-2xl shadow-xl rounded-full border-4 border-blue-400 relative-group"
+                  className="flex fixed bottom-10 bg-mint-cream opacity-80 px-6 py-4 w-11/12 max-w-2xl shadow-xl rounded-full border-4 border-mellow-apricot relative-group"
                   onSubmit={addMessage}
                 >
                   <input
