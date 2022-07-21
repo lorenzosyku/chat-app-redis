@@ -9,16 +9,14 @@ import { ChevronDoubleRightIcon, XIcon } from "@heroicons/react/outline";
 
 const Home = () => {
   const [data, setData] = useState<any>([]);
-  const [loading, setLoading] = useState(false);
   const messageRef = useRef<HTMLInputElement>(null);
   const { data: session } = useSession();
-  console.log(session)
+  //console.log(session);
   const isUserMessage = false;
   const endOfMessangesRef = useRef<HTMLDivElement>(null);
   //const [currentUser, setCurrentUser] = useState<any>('')
 
   let addMessage = (event: FormEvent<HTMLFormElement>) => {
-    setLoading(true);
     event.preventDefault();
     fetch(
       "/api/add?message=" +
@@ -33,12 +31,11 @@ const Home = () => {
       .then(() => {
         loadMessages();
         endOfMessangesRef.current?.scrollIntoView({ behavior: "smooth" });
-        //messageRef.current.value = ""
+        messageRef.current!.value = "";
       });
   };
 
   let removeMessages = (removeMessage: any) => {
-    setLoading(true);
     fetch("/api/remove?message=" + JSON.stringify(removeMessage))
       .then((res) => res.json())
       .then((data) => {
@@ -54,13 +51,11 @@ const Home = () => {
         const copy = JSON.parse(data);
         const parsed = copy.map((el: string) => JSON.parse(el));
         const formatted = parsed.reverse();
-        console.log(formatted)
+        console.log(formatted);
         setData(formatted);
-        setLoading(false);
       });
   };
   useEffect(() => {
-    setLoading(true);
     loadMessages();
   }, []);
 
@@ -104,7 +99,7 @@ const Home = () => {
                     <div
                       className={`flex shadow-md space-x-4 p-3 rounded-lg ${
                         isUserMessage
-                          ? "rounded-br-none bg-gradient-to-l from-mint-cream to-cyan-500 backdrop-filter backdrop-blur-xl bg-opacity-40 "
+                          ? "rounded-br-none bg-gradient-to-l from-mint-cream to-light-celeste backdrop-filter backdrop-blur-xl bg-opacity-40 "
                           : "rounded-bl-none bg-gradient-to-r from-mint-cream to-mellow-apricot backdrop-filter backdrop-blur-xl bg-opacity-40"
                       }`}
                     >
@@ -121,7 +116,7 @@ const Home = () => {
                     >
                       <p className="font-semibold italic">{message.name}</p>
 
-                      <div >
+                      <div>
                         <ReactTimeago date={message.createdAt} />
                       </div>
                     </div>
@@ -129,8 +124,8 @@ const Home = () => {
                 ))}
               </div>
               <div className="flex justify-center">
-                <div className="pb-56" ref={endOfMessangesRef}>
-                  <p>You are up-to-date!</p>
+                <div className="pb-32" ref={endOfMessangesRef}>
+                  <p className="font-semibold text-blue-crayola">You are up-to-date!</p>
                 </div>
                 <form
                   className="flex fixed bottom-10 bg-mint-cream opacity-80 px-6 py-4 w-11/12 max-w-2xl shadow-xl rounded-full border-4 border-mellow-apricot relative-group"
@@ -144,7 +139,7 @@ const Home = () => {
                     className="relative flex-grow outline-none bg-transparent text-white placeholder-gray-500 pr-5"
                   />
 
-                  <button className="relative font-bold text-cyan-600">
+                  <button className="relative font-bold text-blue-crayola">
                     <ChevronDoubleRightIcon className="h-5 w-5" />
                   </button>
                 </form>
