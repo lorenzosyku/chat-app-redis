@@ -12,7 +12,7 @@ const Home = () => {
   const messageRef = useRef<HTMLInputElement>(null);
   const { data: session } = useSession();
   //console.log(session);
-  const isUserMessage = false;
+  
   const endOfMessangesRef = useRef<HTMLDivElement>(null);
   //const [currentUser, setCurrentUser] = useState<any>('')
 
@@ -71,7 +71,12 @@ const Home = () => {
           {session ? (
             <div className="h-screen overflow-y-scroll scrollbar-hide w-full">
               <div className="space-y-10 p-4 mt-12">
-                {data.map((message: any) => (
+                {data.map((message: any) => {
+                  let isUserMessage = false;
+                  if(message.name === session.user?.name){
+                    isUserMessage = true
+                  }
+                  return (
                   <div
                     key={message.id}
                     className={`flex items-end space-x-2 relative ${
@@ -121,10 +126,10 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                ))}
+                )})}
               </div>
               <div className="flex justify-center">
-                <div className="pb-32" ref={endOfMessangesRef}>
+                <div className="pb-56" ref={endOfMessangesRef}>
                   <p className="font-semibold text-blue-crayola">You are up-to-date!</p>
                 </div>
                 <form
