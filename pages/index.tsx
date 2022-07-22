@@ -44,9 +44,7 @@ const Home = () => {
   let loadMessages = () => {
     console.log("load todos");
     fetch("/api/list")
-      .then((res) => {
-        console.log(res.json())
-        return res.json()})
+      .then((res) => res.json())
       .then((data) => {
         const copy = JSON.parse(data);
         const parsed = copy.map((el: string) => JSON.parse(el));
