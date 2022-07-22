@@ -11,10 +11,8 @@ const Home = () => {
   const [data, setData] = useState<any>([]);
   const messageRef = useRef<HTMLInputElement>(null);
   const { data: session } = useSession();
-  //console.log(session);
-  
+  console.log(session);
   const endOfMessangesRef = useRef<HTMLDivElement>(null);
-  //const [currentUser, setCurrentUser] = useState<any>('')
 
   let addMessage = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -73,64 +71,67 @@ const Home = () => {
               <div className="space-y-10 p-4 mt-12">
                 {data.map((message: any) => {
                   let isUserMessage = false;
-                  if(message.name === session.user?.name){
-                    isUserMessage = true
+                  if (message.name === session.user?.name) {
+                    isUserMessage = true;
                   }
                   return (
-                  <div
-                    key={message.id}
-                    className={`flex items-end space-x-2 relative ${
-                      isUserMessage && "justify-end"
-                    }`}
-                  >
                     <div
-                      className={`relative h-8 w-8 ${
-                        isUserMessage && "order-last ml-2"
+                      key={message.id}
+                      className={`flex items-end space-x-2 relative ${
+                        isUserMessage && "justify-end"
                       }`}
                     >
-                      <Avatar
-                        size={20}
-                        name={`${session?.user?.name}`}
-                        variant="beam"
-                        colors={[
-                          "#92A1C6",
-                          "#146A7C",
-                          "#F0AB3D",
-                          "#C271B4",
-                          "#C20D90",
-                        ]}
-                      />
-                    </div>
-                    <div
-                      className={`flex shadow-md space-x-4 p-3 rounded-lg ${
-                        isUserMessage
-                          ? "rounded-br-none bg-gradient-to-l from-mint-cream to-light-celeste backdrop-filter backdrop-blur-xl bg-opacity-40 "
-                          : "rounded-bl-none bg-gradient-to-r from-mint-cream to-mellow-apricot backdrop-filter backdrop-blur-xl bg-opacity-40"
-                      }`}
-                    >
-                      <p>{message.message}</p>
-                      <button onClick={() => removeMessages(message)}>
-                        <XIcon className="w-5 h-5" />
-                      </button>
-                    </div>
+                      <div
+                        className={`relative h-8 w-8 ${
+                          isUserMessage && "order-last ml-2"
+                        }`}
+                      >
+                        <Avatar
+                          size={20}
+                          name={`${session?.user?.name}`}
+                          variant="beam"
+                          colors={[
+                            "#92A1C6",
+                            "#146A7C",
+                            "#F0AB3D",
+                            "#C271B4",
+                            "#C20D90",
+                          ]}
+                        />
+                      </div>
+                      <div
+                        className={`flex shadow-md space-x-4 p-3 rounded-lg ${
+                          isUserMessage
+                            ? "rounded-br-none bg-gradient-to-l from-mint-cream to-light-celeste backdrop-filter backdrop-blur-xl bg-opacity-40 "
+                            : "rounded-bl-none bg-gradient-to-r from-mint-cream to-mellow-apricot backdrop-filter backdrop-blur-xl bg-opacity-40"
+                        }`}
+                      >
+                        <p>{message.message}</p>
+                        <button onClick={() => removeMessages(message)}>
+                          <XIcon className="w-5 h-5" />
+                        </button>
+                      </div>
 
-                    <div
-                      className={`absolute flex -bottom-5 space-x-2 text-xs ${
-                        isUserMessage ? "text-pink-300" : "text-blue-400"
-                      }`}
-                    >
-                      <p className="font-semibold italic">{message.name}</p>
+                      <div
+                        className={`absolute flex -bottom-5 space-x-2 text-xs ${
+                          isUserMessage ? "text-pink-300" : "text-blue-400"
+                        }`}
+                      >
+                        <p className="font-semibold italic">{message.name}</p>
 
-                      <div>
-                        <ReactTimeago date={message.createdAt} />
+                        <div>
+                          <ReactTimeago date={message.createdAt} />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )})}
+                  );
+                })}
               </div>
               <div className="flex justify-center">
                 <div className="pb-56" ref={endOfMessangesRef}>
-                  <p className="font-semibold text-blue-crayola">You are up-to-date!</p>
+                  <p className="font-semibold text-blue-crayola">
+                    You are up-to-date!
+                  </p>
                 </div>
                 <form
                   className="flex fixed bottom-10 bg-mint-cream opacity-80 px-6 py-4 w-11/12 max-w-2xl shadow-xl rounded-full border-4 border-mellow-apricot relative-group"
@@ -141,7 +142,7 @@ const Home = () => {
                     name="messageRef"
                     ref={messageRef}
                     placeholder="New Message"
-                    className="relative flex-grow outline-none bg-transparent text-white placeholder-gray-500 pr-5"
+                    className="relative flex-grow outline-none bg-transparent placeholder-gray-500 pr-5"
                   />
 
                   <button className="relative font-bold text-blue-crayola">
