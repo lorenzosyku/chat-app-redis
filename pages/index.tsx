@@ -44,7 +44,9 @@ const Home = () => {
   let loadMessages = () => {
     console.log("load todos");
     fetch("/api/list")
-      .then((res) => res.json())
+      .then((res) => {
+        console.log(res.json())
+        return res.json()})
       .then((data) => {
         const copy = JSON.parse(data);
         const parsed = copy.map((el: string) => JSON.parse(el));
@@ -142,7 +144,7 @@ const Home = () => {
                     name="messageRef"
                     ref={messageRef}
                     placeholder="New Message"
-                    className="relative flex-grow outline-none bg-transparent placeholder-gray-500 pr-5"
+                    className="relative flex-grow outline-none bg-transparent text-black pr-5"
                   />
 
                   <button className="relative font-bold text-blue-crayola">
