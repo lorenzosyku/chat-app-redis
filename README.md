@@ -1,6 +1,5 @@
 ## Preview
 ![alt text](./images/desktopView.png) 
-![alt text](./images/mobileView.png) 
 
 ## Built With
 
